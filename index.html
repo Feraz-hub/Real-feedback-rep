@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="feed.css">
+</head>
+<body>
+    <div class="feedback" id="feedback">
+        <div class="starDiv">
+            <!-- You can add your image here -->
+            <img src="icon-star.svg" alt="">
+        </div>
+        <h3>How did we do?</h3>
+        <p>
+            Please let us know how we did with your support <br>request. All feedback is appreciated to help us <br>improve our offering!
+        </p>
+        <div class="number">
+            <div class="color" data-value="1">1</div>
+            <div class="color" data-value="2">2</div>
+            <div class="color" data-value="3">3</div>
+            <div class="color" data-value="4">4</div>
+            <div class="color" data-value="5">5</div>
+        </div>
+        <div class="sub" id="submit-btn">
+            <h5><a href="#">SUBMIT</a></h5>
+        </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup" id="popup">
+        <div class="popup-content" id="popup-content">
+            <!-- Your custom popup content goes here -->
+             <img src="illustration-thank-you.svg" alt="">
+            <p style="color: orange; border: 1px solid rgb(11, 11, 71) ; background-color: rgb(15, 15, 97); border-radius: 10px;">You selected <span id="rating-value"></span> out of 5</p> <!-- Placeholder for selected rating -->
+            <h2 style=" font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: white;">Thank you!</h2>
+            <p style="color: grey; text-align: center;"> We appreciate you for taking the time to give a <br> rating. If you ever need more support, don't <br> hesitate to get in touch!</p>
+            <button id="close-popup">Close</button> <!-- Button to close the popup -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all elements with the class 'color'
+            const numbers = document.querySelectorAll('.color');
+            let selectedValue = 0; // Variable to store the selected rating value
+
+            // Add click event listener to each number
+            numbers.forEach(number => {
+                number.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value')); // Get the rating value of the clicked number
+                    selectedValue = value; // Update the selected value
+
+                    // Remove 'selected' class from all numbers
+                    numbers.forEach(num => num.classList.remove('selected'));
+
+                    // Add 'selected' class to the clicked number and all numbers before it
+                    numbers.forEach(num => {
+                        if (parseInt(num.getAttribute('data-value')) <= value) {
+                            num.classList.add('selected');
+                        }
+                    });
+                });
+            });
+
+            // Add click event listener to the submit button
+            document.getElementById('submit-btn').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default action of the anchor tag
+
+                if (selectedValue > 0) { // Check if a rating has been selected
+                    document.getElementById('rating-value').textContent = selectedValue; // Set the rating value in the popup
+                    document.getElementById('feedback').style.display = 'none'; // Hide the feedback form
+                    document.getElementById('popup').style.display = 'flex'; // Show the popup
+                } else {
+                    alert('Please select a rating before submitting.'); // Show alert if no rating is selected
+                }
+            });
+
+            // Add click event listener to the close button in the popup
+            document.getElementById('close-popup').addEventListener('click', function() {
+                document.getElementById('popup').style.display = 'none'; // Hide the popup
+                document.getElementById('feedback').style.display = 'flex'; // Show the feedback form again
+
+                // Optional: reset the form
+                numbers.forEach(num => num.classList.remove('selected')); // Remove 'selected' class from all numbers
+                selectedValue = 0; // Reset the selected value
+            });
+        });
+    </script>
+
+</body>
+</html>
